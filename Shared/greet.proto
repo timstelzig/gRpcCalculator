@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+option csharp_namespace = "GrpcCalculatorService";
+
+package calculate;
+
+service GrpcCalculator {
+  rpc Calculate (GrpcCalculateRequest) returns (GrpcCalculateReply);
+}
+
+enum GrpcCalculatorOperation {
+  GRPC_CALCULATOR_OPERATION_UNSPECIFIED = 0;
+  GRPC_CALCULATOR_OPERATION_ADD = 1;
+  GRPC_CALCULATOR_OPERATION_SUBTRACT = 2;
+  GRPC_CALCULATOR_OPERATION_MULTIPLY = 3;
+  GRPC_CALCULATOR_OPERATION_DIVIDE = 4;
+}
+
+message GrpcCalculateRequest {
+  GrpcCalculatorOperation operation = 1;
+  double left_operand = 2;
+  double right_operand = 3;
+}
+
+message GrpcCalculateReply {
+  double result = 1;
+}

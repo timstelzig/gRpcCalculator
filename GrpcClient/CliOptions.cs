@@ -15,9 +15,9 @@ class CommonOptions
 class AddOptions : CommonOptions
 {
     [Value(0, Required = true)]
-    float OperandLeft { get; set; }
+    public float OperandLeft { get; set; }
     [Value(1, Required = true)]
-    float OperandRight { get; set; }
+    public float OperandRight { get; set; }
 }
 
 [Verb("subtract", HelpText = "Subtract two numbers")]
