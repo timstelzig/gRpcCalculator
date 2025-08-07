@@ -1,17 +1,23 @@
+using Grpc.Net.Client;
 using GrpcCalculatorService;
 using Shared;
 
 namespace GrpcClient;
 
+public interface ICalculatorClient
+{
+    Task<double> PerformCalculation(CalculatorOperation operation, double left, double right);
+}
+
 public class CalculatorGrpcClient : ICalculatorClient
 {
     private readonly GrpcCalculator.GrpcCalculatorClient _client;
 
-    public CalculatorGrpcClient(GrpcCalculator.GrpcCalculatorClient client)
+    public CalculatorGrpcClient(GrpcChannel channel)
     {
-        _client = client;
+        _client = new GrpcCalculator.GrpcCalculatorClient(channel);
     }
-    
+
     public async Task<double> PerformCalculation(CalculatorOperation operation, double left, double right)
     {
         var grpcOperation = operation switch
@@ -25,9 +31,4 @@ public class CalculatorGrpcClient : ICalculatorClient
         var response = await _client.CalculateAsync(request);
         return response.Result;
     }
-}
-
-public interface ICalculatorClient
-{
-    Task<double> PerformCalculation(CalculatorOperation operation, double left, double right);
 }
