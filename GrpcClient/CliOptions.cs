@@ -2,10 +2,10 @@ using CommandLine;
 
 namespace GrpcClient;
 
-class CliOptions
+internal record CliOptions
 {
     [Option('h', "host", HelpText = "Hostname or IP address")]
-    string Hostname { get; set; } = "localhost";
+    public string Hostname { get; set; } = "localhost";
 
     [Option('p', "post", HelpText = "Port")]
     public short Port { get; set; } = 5299;
