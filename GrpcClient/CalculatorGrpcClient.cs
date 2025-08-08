@@ -3,7 +3,7 @@ using GrpcCalculatorService;
 
 namespace GrpcClient;
 
-internal interface IRemoteCalculatorClient
+public interface IRemoteCalculatorClient
 {
     public Task<double> Add(double leftSummand, double rightSummand);
     public Task<double> Subtract(double minuend, double subtrahend);
@@ -11,14 +11,9 @@ internal interface IRemoteCalculatorClient
     public Task<double> Divide(double dividend, double divisor);
 }
 
-internal class CalculatorGrpcClient : IRemoteCalculatorClient
+internal class CalculatorGrpcClient(GrpcChannel channel) : IRemoteCalculatorClient
 {
-    private readonly GrpcCalculator.GrpcCalculatorClient _client;
-
-    public CalculatorGrpcClient(GrpcChannel channel)
-    {
-        _client = new GrpcCalculator.GrpcCalculatorClient(channel);
-    }
+    private readonly GrpcCalculator.GrpcCalculatorClient _client = new(channel);
 
     public async Task<double> Add(double leftSummand, double rightSummand)
     {

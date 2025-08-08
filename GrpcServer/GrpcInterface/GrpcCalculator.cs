@@ -4,32 +4,24 @@ using GrpcServer.Services;
 
 namespace GrpcServer.GRpcInterface;
 
-internal class GrpcCalculator : GrpcCalculatorService.GrpcCalculator.GrpcCalculatorBase
+internal class GrpcCalculator(ICalculator calculator)
+    : GrpcCalculatorService.GrpcCalculator.GrpcCalculatorBase
 {
-    private readonly ILogger<GrpcCalculator> _logger;
-    private readonly ICalculator _calculator;
-
-    public GrpcCalculator(ILogger<GrpcCalculator> logger, ICalculator calculator)
-    {
-        _logger = logger;
-        _calculator = calculator;
-    }
-
     public override Task<GrpcAddReply> Add(GrpcAddRequest request, ServerCallContext context)
     {
-        return Task.FromResult(new GrpcAddReply { Sum = _calculator.Add(request.LeftSummand, request.RightSummand) });
+        return Task.FromResult(new GrpcAddReply { Sum = calculator.Add(request.LeftSummand, request.RightSummand) });
     }
 
     public override Task<GrpcSubtractReply> Subtract(GrpcSubtractRequest request, ServerCallContext context)
     {
         return Task.FromResult(new GrpcSubtractReply
-            { Difference = _calculator.Subtract(request.Minuend, request.Subtrahend) });
+            { Difference = calculator.Subtract(request.Minuend, request.Subtrahend) });
     }
 
     public override Task<GrpcMultiplyReply> Multiply(GrpcMultiplyRequest request, ServerCallContext context)
     {
         return Task.FromResult(new GrpcMultiplyReply
-            { Product = _calculator.Multiply(request.LeftFactor, request.RightFactor) });
+            { Product = calculator.Multiply(request.LeftFactor, request.RightFactor) });
     }
 
     public override Task<GrpcDivideReply> Divide(GrpcDivideRequest request, ServerCallContext context)
@@ -37,7 +29,7 @@ internal class GrpcCalculator : GrpcCalculatorService.GrpcCalculator.GrpcCalcula
         try
         {
             return Task.FromResult(new GrpcDivideReply
-                { Quotient = _calculator.Divide(request.Dividend, request.Divisor) });
+                { Quotient = calculator.Divide(request.Dividend, request.Divisor) });
         }
         catch (DivideByZeroException)
         {

@@ -1,11 +1,10 @@
 ﻿using GrpcServer.Services;
-using Microsoft.Extensions.Logging.Abstractions;
 
 namespace Tests.Server;
 
 public class CalculatorTests
 {
-    private Calculator Instance => new (NullLogger<Calculator>.Instance);
+    private Calculator Instance => new ();
     
     [Test]
     public void TestAdd()

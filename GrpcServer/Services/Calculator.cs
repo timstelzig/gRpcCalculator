@@ -10,13 +10,6 @@ public interface ICalculator
 
 public class Calculator : ICalculator
 {
-    private readonly ILogger<Calculator> _logger;
-
-    public Calculator(ILogger<Calculator> logger)
-    {
-        _logger = logger;
-    }
-
     public double Add(double leftSummand, double rightSummand) => leftSummand + rightSummand;
 
     public double Subtract(double minuend, double subtrahend) => minuend - subtrahend;

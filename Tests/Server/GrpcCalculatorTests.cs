@@ -1,18 +1,15 @@
 ﻿using Grpc.Core;
 using GrpcCalculatorService;
 using GrpcServer.Services;
-using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 
 namespace Tests.Server;
 
 public class GrpcCalculatorTests
 {
-    private GrpcServer.GRpcInterface.GrpcCalculator GetService(ICalculator calculatorMockObject) => 
-        new (
-            NullLogger<GrpcServer.GRpcInterface.GrpcCalculator>.Instance,
-            calculatorMockObject);
-    
+    private GrpcServer.GRpcInterface.GrpcCalculator GetService(ICalculator calculatorMockObject) =>
+        new(calculatorMockObject);
+
     [Test]
     public async Task TestAdd()
     {
@@ -25,7 +22,7 @@ public class GrpcCalculatorTests
 
         Assert.That(reply.Sum, Is.EqualTo(3));
     }
-    
+
     [Test]
     public async Task TestSubtract()
     {
@@ -38,7 +35,7 @@ public class GrpcCalculatorTests
 
         Assert.That(reply.Difference, Is.EqualTo(1));
     }
-    
+
     [Test]
     public async Task TestMultiply()
     {
@@ -51,7 +48,7 @@ public class GrpcCalculatorTests
 
         Assert.That(reply.Product, Is.EqualTo(56));
     }
-    
+
     [Test]
     public async Task TestDivide()
     {
@@ -64,16 +61,17 @@ public class GrpcCalculatorTests
 
         Assert.That(reply.Quotient, Is.EqualTo(2));
     }
-    
+
     [Test]
-    public async Task TestDivideByZero()
+    public void TestDivideByZero()
     {
         var calculatorMock = new Mock<ICalculator>();
         calculatorMock.Setup(calculator => calculator.Divide(8, 0)).Throws<DivideByZeroException>();
         var context = Mock.Of<ServerCallContext>();
         var grpcService = GetService(calculatorMock.Object);
 
-        var exception = Assert.ThrowsAsync<RpcException>(async () => await grpcService.Divide(new GrpcDivideRequest{Dividend = 8,Divisor = 0}, context));
+        var exception = Assert.ThrowsAsync<RpcException>(async () =>
+            await grpcService.Divide(new GrpcDivideRequest { Dividend = 8, Divisor = 0 }, context));
         Assert.That(exception.Status.StatusCode, Is.EqualTo(StatusCode.InvalidArgument));
         Assert.That(exception.Status.Detail, Is.EqualTo("Divisor must be non-zero"));
     }
