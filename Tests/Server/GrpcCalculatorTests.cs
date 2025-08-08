@@ -8,9 +8,9 @@ namespace Tests.Server;
 
 public class GrpcCalculatorTests
 {
-    private GrpcServer.GRpcInterface.GrpcCalculatorService GetService(ICalculator calculatorMockObject) => 
+    private GrpcServer.GRpcInterface.GrpcCalculator GetService(ICalculator calculatorMockObject) => 
         new (
-            NullLogger<GrpcServer.GRpcInterface.GrpcCalculatorService>.Instance,
+            NullLogger<GrpcServer.GRpcInterface.GrpcCalculator>.Instance,
             calculatorMockObject);
     
     [Test]

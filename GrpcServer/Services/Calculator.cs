@@ -8,11 +8,11 @@ public interface ICalculator
     public double Divide(double dividend, double divisor);
 }
 
-public class CalculatorService : ICalculator
+public class Calculator : ICalculator
 {
-    private readonly ILogger<CalculatorService> _logger;
+    private readonly ILogger<Calculator> _logger;
 
-    public CalculatorService(ILogger<CalculatorService> logger)
+    public Calculator(ILogger<Calculator> logger)
     {
         _logger = logger;
     }

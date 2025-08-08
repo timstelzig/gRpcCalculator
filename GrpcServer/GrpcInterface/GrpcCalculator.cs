@@ -4,12 +4,12 @@ using GrpcServer.Services;
 
 namespace GrpcServer.GRpcInterface;
 
-public class GrpcCalculatorService : GrpcCalculator.GrpcCalculatorBase
+internal class GrpcCalculator : GrpcCalculatorService.GrpcCalculator.GrpcCalculatorBase
 {
-    private readonly ILogger<GrpcCalculatorService> _logger;
+    private readonly ILogger<GrpcCalculator> _logger;
     private readonly ICalculator _calculator;
 
-    public GrpcCalculatorService(ILogger<GrpcCalculatorService> logger, ICalculator calculator)
+    public GrpcCalculator(ILogger<GrpcCalculator> logger, ICalculator calculator)
     {
         _logger = logger;
         _calculator = calculator;

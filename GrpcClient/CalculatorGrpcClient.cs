@@ -3,7 +3,7 @@ using GrpcCalculatorService;
 
 namespace GrpcClient;
 
-public interface ICalculatorClient
+internal interface IRemoteCalculatorClient
 {
     public Task<double> Add(double leftSummand, double rightSummand);
     public Task<double> Subtract(double minuend, double subtrahend);
@@ -11,7 +11,7 @@ public interface ICalculatorClient
     public Task<double> Divide(double dividend, double divisor);
 }
 
-public class CalculatorGrpcClient : ICalculatorClient
+internal class CalculatorGrpcClient : IRemoteCalculatorClient
 {
     private readonly GrpcCalculator.GrpcCalculatorClient _client;
 

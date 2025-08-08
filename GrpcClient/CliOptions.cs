@@ -11,7 +11,7 @@ internal record CliOptions
     public short Port { get; set; } = 5299;
 
     [Value(0, Required = true, HelpText = "The operation to perform. One of Add, Subtract, Multiply, Divide.")]
-    public CalculatorOperation Operation { get; set; }
+    public MathOperator Operation { get; set; }
 
     [Value(1, Required = true, HelpText = "The first operand.")]
     public float OperandLeft { get; set; }

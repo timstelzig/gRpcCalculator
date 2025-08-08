@@ -2,7 +2,7 @@ using Grpc.Net.Client;
 
 namespace GrpcClient;
 
-record ConnectionOptions(string Host, int Port);
+internal record ConnectionOptions(string Host, int Port);
 
 internal static class GrpcChannelCreator
 {

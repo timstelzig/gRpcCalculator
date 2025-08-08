@@ -2,12 +2,20 @@ using System.Globalization;
 
 namespace GrpcClient;
 
+internal enum MathOperator
+{
+    Add,
+    Subtract,
+    Multiply,
+    Divide
+}
+
 internal class CalculatorCliClient
 {
-    private readonly ICalculatorClient _client;
+    private readonly IRemoteCalculatorClient _client;
     private readonly CultureInfo _culture;
 
-    public CalculatorCliClient(ICalculatorClient client, CultureInfo? culture = null)
+    public CalculatorCliClient(IRemoteCalculatorClient client, CultureInfo? culture = null)
     {
         _client = client;
         _culture = culture ?? CultureInfo.CurrentCulture;
@@ -17,10 +25,10 @@ internal class CalculatorCliClient
     {
         var result = cliOptions.Operation switch
         {
-            CalculatorOperation.Add => await _client.Add(cliOptions.OperandLeft, cliOptions.OperandRight),
-            CalculatorOperation.Subtract => await _client.Subtract(cliOptions.OperandLeft, cliOptions.OperandRight),
-            CalculatorOperation.Multiply => await _client.Multiply(cliOptions.OperandLeft, cliOptions.OperandRight),
-            CalculatorOperation.Divide => await _client.Divide(cliOptions.OperandLeft, cliOptions.OperandRight),
+            MathOperator.Add => await _client.Add(cliOptions.OperandLeft, cliOptions.OperandRight),
+            MathOperator.Subtract => await _client.Subtract(cliOptions.OperandLeft, cliOptions.OperandRight),
+            MathOperator.Multiply => await _client.Multiply(cliOptions.OperandLeft, cliOptions.OperandRight),
+            MathOperator.Divide => await _client.Divide(cliOptions.OperandLeft, cliOptions.OperandRight),
         };
 
         return result.ToString(_culture);

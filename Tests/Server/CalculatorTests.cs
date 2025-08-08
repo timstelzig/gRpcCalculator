@@ -5,7 +5,7 @@ namespace Tests.Server;
 
 public class CalculatorTests
 {
-    private CalculatorService Instance => new (NullLogger<CalculatorService>.Instance);
+    private Calculator Instance => new (NullLogger<Calculator>.Instance);
     
     [Test]
     public void TestAdd()
