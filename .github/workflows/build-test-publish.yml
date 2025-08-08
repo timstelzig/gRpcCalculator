@@ -1,0 +1,53 @@
+name: build, test and publish
+
+on:
+  push:
+  pull_request:
+    branches: [ main ]
+    paths:
+      - '**.cs'
+      - '**.csproj'
+
+env:
+  DOTNET_VERSION: '9'
+
+jobs:
+  build-test-publish:
+
+    name: build-test-publish
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Install dependencies
+        run: dotnet restore
+
+      - name: Build
+        run: |
+          dotnet build --configuration Release --no-restore
+          mkdir build
+          cd GrpcClient
+          dotnet publish -c Release -o ../build -r linux-x64 --self-contained true /p:UseAppHost=true /p:PublishSingleFile=true
+          dotnet publish -c Release -o ../build -r win-x64 --self-contained true /p:UseAppHost=true /p:PublishSingleFile=true
+          cd ../GrpcServer
+          dotnet publish -c Release -o ../build -r linux-x64 --self-contained true /p:UseAppHost=true /p:PublishSingleFile=true
+          dotnet publish -c Release -o ../build -r win-x64 --self-contained true /p:UseAppHost=true /p:PublishSingleFile=true
+
+      - name: Test
+        run: dotnet test --no-restore --verbosity normal
+        
+      - name: end-to-end-Test
+        run: |
+          cd build
+          ../e2eTest.sh
+
+      - name: Upload-exes
+        uses: actions/upload-artifact@v4
+        with:
+          name: Executables
+          path: build/*
