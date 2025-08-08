@@ -16,7 +16,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Protobuf Include="greet.proto" GrpcServices="Both"/>
+        <Protobuf Include="calculator.proto" GrpcServices="Both" />
     </ItemGroup>
 
 </Project>

@@ -1,15 +1,14 @@
 using CommandLine;
-using Shared;
 
 namespace GrpcClient;
 
 class CliOptions
 {
-    [Option('h', "host", HelpText = "Hostname or IP address", Default = "localhost")]
-    string Hostname { get; set; }
+    [Option('h', "host", HelpText = "Hostname or IP address")]
+    string Hostname { get; set; } = "localhost";
 
-    [Option('p', "post", HelpText = "Port", Default = 5299)]
-    short Port { get; set; }
+    [Option('p', "post", HelpText = "Port")]
+    public short Port { get; set; } = 5299;
 
     [Value(0, Required = true, HelpText = "The operation to perform. One of Add, Subtract, Multiply, Divide.")]
     public CalculatorOperation Operation { get; set; }

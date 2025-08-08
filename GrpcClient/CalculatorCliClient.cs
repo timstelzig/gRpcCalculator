@@ -15,7 +15,14 @@ internal class CalculatorCliClient
 
     public async Task<string> RunCalculation(CliOptions cliOptions)
     {
-        var result = await _client.PerformCalculation(cliOptions.Operation, cliOptions.OperandLeft, cliOptions.OperandRight);
+        var result = cliOptions.Operation switch
+        {
+            CalculatorOperation.Add => await _client.Add(cliOptions.OperandLeft, cliOptions.OperandRight),
+            CalculatorOperation.Subtract => await _client.Subtract(cliOptions.OperandLeft, cliOptions.OperandRight),
+            CalculatorOperation.Multiply => await _client.Multiply(cliOptions.OperandLeft, cliOptions.OperandRight),
+            CalculatorOperation.Divide => await _client.Divide(cliOptions.OperandLeft, cliOptions.OperandRight),
+        };
+
         return result.ToString(_culture);
     }
 }

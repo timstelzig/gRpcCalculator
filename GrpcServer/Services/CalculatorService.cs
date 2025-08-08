@@ -1,10 +1,11 @@
-using Shared;
-
 namespace GrpcServer.Services;
 
 public interface ICalculator
 {
-    public double PerformCalculation(CalculatorOperation operation, double left, double right);
+    public double Add(double leftSummand, double rightSummand);
+    public double Subtract(double minuend, double subtrahend);
+    public double Multiply(double leftFactor, double rightFactor);
+    public double Divide(double dividend, double divisor);
 }
 
 public class CalculatorService : ICalculator
@@ -16,14 +17,16 @@ public class CalculatorService : ICalculator
         _logger = logger;
     }
 
-    public double PerformCalculation(CalculatorOperation operation, double left, double right)
+    public double Add(double leftSummand, double rightSummand) => leftSummand + rightSummand;
+
+    public double Subtract(double minuend, double subtrahend) => minuend - subtrahend;
+
+    public double Multiply(double leftFactor, double rightFactor) => leftFactor * rightFactor;
+
+    public double Divide(double dividend, double divisor)
     {
-        return operation switch
-        {
-            CalculatorOperation.Add => left + right,
-            CalculatorOperation.Subtract => left - right,
-            CalculatorOperation.Multiply => left * right,
-            CalculatorOperation.Divide => left / right,
-        };
+        if (divisor == 0)
+            throw new DivideByZeroException();
+        return dividend / divisor;
     }
 }

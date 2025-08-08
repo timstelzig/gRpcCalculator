@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+option csharp_namespace = "GrpcCalculatorService";
+
+package calculate;
+
+service GrpcCalculator {
+  rpc Add (GrpcAddRequest) returns (GrpcAddReply);
+  rpc Subtract (GrpcSubtractRequest) returns (GrpcSubtractReply);
+  rpc Multiply (GrpcMultiplyRequest) returns (GrpcMultiplyReply);
+  rpc Divide (GrpcDivideRequest) returns (GrpcDivideReply);
+}
+
+message GrpcAddRequest {
+  double left_summand = 1;
+  double right_summand = 2;
+}
+
+message GrpcAddReply {
+  double sum = 1;
+}
+
+message GrpcSubtractRequest {
+  double minuend = 1;
+  double subtrahend = 2;
+}
+
+message GrpcSubtractReply {
+  double difference = 1;
+}
+
+
+message GrpcMultiplyRequest {
+  double left_factor = 1;
+  double right_factor = 2;
+}
+
+message GrpcMultiplyReply {
+  double product = 1;
+}
+
+
+message GrpcDivideRequest {
+  double dividend = 1;
+  double divisor = 2;
+}
+
+message GrpcDivideReply {
+  double quotient = 1;
+}
