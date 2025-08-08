@@ -3,6 +3,9 @@ using GrpcCalculatorService;
 
 namespace GrpcClient;
 
+/// <summary>
+/// Remote provider of basic double calculations.
+/// </summary>
 public interface IRemoteCalculatorClient
 {
     public Task<double> Add(double leftSummand, double rightSummand);
@@ -11,6 +14,10 @@ public interface IRemoteCalculatorClient
     public Task<double> Divide(double dividend, double divisor);
 }
 
+/// <summary>
+/// Provides basic double operations using a gRPC Server
+/// </summary>
+/// <param name="channel">gRPC channel to the server. Re-usable.</param>
 internal class CalculatorGrpcClient(GrpcChannel channel) : IRemoteCalculatorClient
 {
     private readonly GrpcCalculator.GrpcCalculatorClient _client = new(channel);

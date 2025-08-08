@@ -10,7 +10,12 @@ internal enum MathOperator
     Divide
 }
 
-internal class CalculatorCliClient(IRemoteCalculatorClient client, CultureInfo? culture = null)
+/// <summary>
+/// Fulfills calculation request from the command line, using a remote calculator service.
+/// </summary>
+/// <param name="client">Remote calculator client.</param>
+/// <param name="culture">Culture to use for result formatting.</param>
+internal class CliCalculator(IRemoteCalculatorClient client, CultureInfo? culture = null)
 {
     private readonly CultureInfo _culture = culture ?? CultureInfo.CurrentCulture;
 

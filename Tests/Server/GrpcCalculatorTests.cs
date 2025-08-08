@@ -5,6 +5,9 @@ using Moq;
 
 namespace Tests.Server;
 
+/// <summary>
+/// Test that the GrpcCalculator correctly forwards requests to the calculator, and handles results.
+/// </summary>
 public class GrpcCalculatorTests
 {
     private GrpcServer.GRpcInterface.GrpcCalculator GetService(ICalculator calculatorMockObject) =>

@@ -3,6 +3,9 @@ using GrpcClient;
 
 namespace Tests.Client;
 
+/// <summary>
+/// Test that command line parameters are parsed correctly.
+/// </summary>
 public class CliParserTests
 {
     [Test]

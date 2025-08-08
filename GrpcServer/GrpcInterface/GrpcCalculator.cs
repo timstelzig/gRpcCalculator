@@ -4,6 +4,9 @@ using GrpcServer.Services;
 
 namespace GrpcServer.GRpcInterface;
 
+/// <summary>
+/// gRPC Interface for an <see cref="ICalculator"/>
+/// </summary>
 internal class GrpcCalculator(ICalculator calculator)
     : GrpcCalculatorService.GrpcCalculator.GrpcCalculatorBase
 {

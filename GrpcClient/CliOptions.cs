@@ -4,10 +4,10 @@ namespace GrpcClient;
 
 internal record CliOptions
 {
-    [Option('h', "host", HelpText = "Hostname or IP address")]
+    [Option('h', "host", HelpText = "gRPC Server Hostname or IP address")]
     public string Hostname { get; set; } = "localhost";
 
-    [Option('p', "post", HelpText = "Port")]
+    [Option('p', "post", HelpText = "gRPC Server Port")]
     public short Port { get; set; } = 5299;
 
     [Value(0, Required = true, HelpText = "The operation to perform. One of Add, Subtract, Multiply, Divide.")]
@@ -22,6 +22,9 @@ internal record CliOptions
     public ConnectionOptions GetConnectionOptions() => new(Hostname, Port);
 }
 
+/// <summary>
+/// Provides a parser for <see cref="CliOptions"/>.
+/// </summary>
 internal static class CliParser
 {
     public static ParserResult<CliOptions> ParseArgs(string[] args)
