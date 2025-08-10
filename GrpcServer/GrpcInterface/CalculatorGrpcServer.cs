@@ -7,8 +7,8 @@ namespace GrpcServer.GRpcInterface;
 /// <summary>
 /// gRPC Interface for an <see cref="ICalculator"/>
 /// </summary>
-internal class GrpcCalculator(ICalculator calculator)
-    : GrpcCalculatorService.GrpcCalculator.GrpcCalculatorBase
+internal class CalculatorGrpcServer(ICalculator calculator)
+    : GrpcCalculator.GrpcCalculatorBase
 {
     public override Task<GrpcAddReply> Add(GrpcAddRequest request, ServerCallContext context)
     {

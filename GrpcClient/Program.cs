@@ -2,7 +2,7 @@
 using Grpc.Core;
 using GrpcClient;
 
-return await CliParser.ParseArgs(args).MapResult(
+return await CliArgumentParser.ParseArgs(args).MapResult(
     HandleCliOptions,
     _ => Task.FromResult(2)
 );
@@ -20,7 +20,7 @@ async Task<int> HandleCliOptions(CliOptions cliOptions)
     }
     catch (RpcException e)
     {
-        // This includes connection issues, as well as logic issues in the server handler
+        // This includes connection issues, as well as errors in the server handler
         Console.WriteLine($"{e.Status.StatusCode}: {e.Status.Detail}");
         return 1;
     }

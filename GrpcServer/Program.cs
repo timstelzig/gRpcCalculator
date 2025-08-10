@@ -12,5 +12,5 @@ builder.Services.AddGrpc();
 builder.Services.AddTransient<ICalculator, Calculator>();
 
 var app = builder.Build();
-app.MapGrpcService<GrpcCalculator>();
+app.MapGrpcService<CalculatorGrpcServer>();
 app.Run();

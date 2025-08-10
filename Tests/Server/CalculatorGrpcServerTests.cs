@@ -8,12 +8,12 @@ namespace Tests.Server;
 /// <summary>
 /// Test that the GrpcCalculator correctly forwards requests to the calculator, and handles results.
 /// </summary>
-public class GrpcCalculatorTests
+public class CalculatorGrpcServerTests
 {
     private static ServerCallContext Context => Mock.Of<ServerCallContext>();
     private readonly Mock<ICalculator> _calculator = new();
     
-    private GrpcServer.GRpcInterface.GrpcCalculator GetService() =>
+    private GrpcServer.GRpcInterface.CalculatorGrpcServer GetService() =>
         new(_calculator.Object);
 
     [Test]

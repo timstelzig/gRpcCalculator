@@ -25,7 +25,7 @@ internal record CliOptions
 /// <summary>
 /// Provides a parser for <see cref="CliOptions"/>.
 /// </summary>
-internal static class CliParser
+internal static class CliArgumentParser
 {
     public static ParserResult<CliOptions> ParseArgs(string[] args)
     {
