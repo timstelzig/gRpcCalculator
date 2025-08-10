@@ -9,54 +9,51 @@ namespace Tests.Client;
 /// </summary>
 public class CliClient
 {
+    private readonly Mock<IRemoteCalculatorClient> _calculator = new();
+    private CliCalculator GetCliCalculator() => new(_calculator.Object, CultureInfo.InvariantCulture);
+
+    private async Task<string> Calculate(MathOperator operation, double op1, double op2) => await GetCliCalculator()
+        .RunCalculation(new CliOptions
+        {
+            Operation = operation, OperandLeft = op1, OperandRight = op2
+        });
+
     [Test]
     public async Task TestAdd()
     {
-        var mock = new Mock<IRemoteCalculatorClient>();
-        mock.Setup(calculator => calculator.Add(1, 2)).Returns(Task.FromResult<double>(3));
-        var service = new CliCalculator(mock.Object, CultureInfo.InvariantCulture);
-        
-        var result = await service.RunCalculation(new CliOptions
-            { Operation = MathOperator.Add, OperandLeft = 1, OperandRight = 2 });
+        _calculator.Setup(calculator => calculator.Add(1, 2)).Returns(Task.FromResult<double>(3));
+
+        var result = await Calculate(MathOperator.Add, 1, 2 );
 
         Assert.That(result, Is.EqualTo("3"));
     }
-    
+
     [Test]
     public async Task TestSubtract()
     {
-        var mock = new Mock<IRemoteCalculatorClient>();
-        mock.Setup(calculator => calculator.Subtract(3, 2)).Returns(Task.FromResult<double>(1));
-        var service = new CliCalculator(mock.Object, CultureInfo.InvariantCulture);
-        
-        var result = await service.RunCalculation(new CliOptions
-            { Operation = MathOperator.Subtract, OperandLeft = 3, OperandRight = 2 });
+        _calculator.Setup(calculator => calculator.Subtract(3, 2)).Returns(Task.FromResult<double>(1));
+
+        var result = await Calculate(MathOperator.Subtract, 3, 2 );
 
         Assert.That(result, Is.EqualTo("1"));
     }
-    
+
     [Test]
     public async Task TestMultiply()
     {
-        var mock = new Mock<IRemoteCalculatorClient>();
-        mock.Setup(calculator => calculator.Multiply(7, 8)).Returns(Task.FromResult<double>(56));
-        var service = new CliCalculator(mock.Object, CultureInfo.InvariantCulture);
-        
-        var result = await service.RunCalculation(new CliOptions
-            { Operation = MathOperator.Multiply, OperandLeft = 7, OperandRight = 8 });
+        _calculator.Setup(calculator => calculator.Multiply(7, 8)).Returns(Task.FromResult<double>(56));
+
+        var result = await Calculate(MathOperator.Multiply, 7, 8 );
 
         Assert.That(result, Is.EqualTo("56"));
     }
-    
+
     [Test]
     public async Task TestDivide()
     {
-        var mock = new Mock<IRemoteCalculatorClient>();
-        mock.Setup(calculator => calculator.Divide(8, 4)).Returns(Task.FromResult<double>(2));
-        var service = new CliCalculator(mock.Object, CultureInfo.InvariantCulture);
-        
-        var result = await service.RunCalculation(new CliOptions
-            { Operation = MathOperator.Divide, OperandLeft = 8, OperandRight = 4 });
+        _calculator.Setup(calculator => calculator.Divide(8, 4)).Returns(Task.FromResult<double>(2));
+
+        var result = await Calculate(MathOperator.Divide, 8, 4 );
 
         Assert.That(result, Is.EqualTo("2"));
     }

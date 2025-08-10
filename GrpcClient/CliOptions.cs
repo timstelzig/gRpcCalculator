@@ -14,10 +14,10 @@ internal record CliOptions
     public MathOperator Operation { get; set; }
 
     [Value(1, Required = true, HelpText = "The first operand.")]
-    public float OperandLeft { get; set; }
+    public double OperandLeft { get; set; }
 
     [Value(2, Required = true, HelpText = "The second operand.")]
-    public float OperandRight { get; set; }
+    public double OperandRight { get; set; }
 
     public ConnectionOptions GetConnectionOptions() => new(Hostname, Port);
 }

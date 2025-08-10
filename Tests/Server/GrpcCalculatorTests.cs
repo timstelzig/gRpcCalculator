@@ -10,18 +10,18 @@ namespace Tests.Server;
 /// </summary>
 public class GrpcCalculatorTests
 {
-    private GrpcServer.GRpcInterface.GrpcCalculator GetService(ICalculator calculatorMockObject) =>
-        new(calculatorMockObject);
+    private static ServerCallContext Context => Mock.Of<ServerCallContext>();
+    private readonly Mock<ICalculator> _calculator = new();
+    
+    private GrpcServer.GRpcInterface.GrpcCalculator GetService() =>
+        new(_calculator.Object);
 
     [Test]
     public async Task TestAdd()
     {
-        var calculatorMock = new Mock<ICalculator>();
-        calculatorMock.Setup(calculator => calculator.Add(1, 2)).Returns(3);
-        var context = Mock.Of<ServerCallContext>();
-        var grpcService = GetService(calculatorMock.Object);
+        _calculator.Setup(calculator => calculator.Add(1, 2)).Returns(3);
 
-        var reply = await grpcService.Add(new GrpcAddRequest { LeftSummand = 1, RightSummand = 2 }, context);
+        var reply = await GetService().Add(new GrpcAddRequest { LeftSummand = 1, RightSummand = 2 }, Context);
 
         Assert.That(reply.Sum, Is.EqualTo(3));
     }
@@ -29,12 +29,9 @@ public class GrpcCalculatorTests
     [Test]
     public async Task TestSubtract()
     {
-        var calculatorMock = new Mock<ICalculator>();
-        calculatorMock.Setup(calculator => calculator.Subtract(3, 2)).Returns(1);
-        var context = Mock.Of<ServerCallContext>();
-        var grpcService = GetService(calculatorMock.Object);
+        _calculator.Setup(calculator => calculator.Subtract(3, 2)).Returns(1);
 
-        var reply = await grpcService.Subtract(new GrpcSubtractRequest { Minuend = 3, Subtrahend = 2 }, context);
+        var reply = await GetService().Subtract(new GrpcSubtractRequest { Minuend = 3, Subtrahend = 2 }, Context);
 
         Assert.That(reply.Difference, Is.EqualTo(1));
     }
@@ -42,12 +39,9 @@ public class GrpcCalculatorTests
     [Test]
     public async Task TestMultiply()
     {
-        var calculatorMock = new Mock<ICalculator>();
-        calculatorMock.Setup(calculator => calculator.Multiply(7, 8)).Returns(56);
-        var context = Mock.Of<ServerCallContext>();
-        var grpcService = GetService(calculatorMock.Object);
+        _calculator.Setup(calculator => calculator.Multiply(7, 8)).Returns(56);
 
-        var reply = await grpcService.Multiply(new GrpcMultiplyRequest { LeftFactor = 7, RightFactor = 8 }, context);
+        var reply = await GetService().Multiply(new GrpcMultiplyRequest { LeftFactor = 7, RightFactor = 8 }, Context);
 
         Assert.That(reply.Product, Is.EqualTo(56));
     }
@@ -55,12 +49,9 @@ public class GrpcCalculatorTests
     [Test]
     public async Task TestDivide()
     {
-        var calculatorMock = new Mock<ICalculator>();
-        calculatorMock.Setup(calculator => calculator.Divide(8, 4)).Returns(2);
-        var context = Mock.Of<ServerCallContext>();
-        var grpcService = GetService(calculatorMock.Object);
+        _calculator.Setup(calculator => calculator.Divide(8, 4)).Returns(2);
 
-        var reply = await grpcService.Divide(new GrpcDivideRequest { Dividend = 8, Divisor = 4 }, context);
+        var reply = await GetService().Divide(new GrpcDivideRequest { Dividend = 8, Divisor = 4 }, Context);
 
         Assert.That(reply.Quotient, Is.EqualTo(2));
     }
@@ -68,13 +59,11 @@ public class GrpcCalculatorTests
     [Test]
     public void TestDivideByZero()
     {
-        var calculatorMock = new Mock<ICalculator>();
-        calculatorMock.Setup(calculator => calculator.Divide(8, 0)).Throws<DivideByZeroException>();
-        var context = Mock.Of<ServerCallContext>();
-        var grpcService = GetService(calculatorMock.Object);
+        _calculator.Setup(calculator => calculator.Divide(8, 0)).Throws<DivideByZeroException>();
 
         var exception = Assert.ThrowsAsync<RpcException>(async () =>
-            await grpcService.Divide(new GrpcDivideRequest { Dividend = 8, Divisor = 0 }, context));
+            await GetService().Divide(new GrpcDivideRequest { Dividend = 8, Divisor = 0 }, Context));
+        
         Assert.That(exception.Status.StatusCode, Is.EqualTo(StatusCode.InvalidArgument));
         Assert.That(exception.Status.Detail, Is.EqualTo("Divisor must be non-zero"));
     }
