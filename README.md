@@ -12,8 +12,8 @@ Open questions:
 
 - Which datatypes should be supported, and what should the exact semantics be like (underflow, overflow, divide by zero,
   catastrophic cancellation, etc.)
-- Which common server application features are required, like authentication, authorization, reverse-proxy setup, https
-  termination
+- Which common server application features are required, like authentication, authorization, reverse-proxy setup, load
+  balancing, https termination
 - In which direction is the software expected to grow. E.g. more operations, more datatypes, more complex calculations,
   something else entirely
 
@@ -22,7 +22,15 @@ Assumptions for the exercise:
 - `double`, with default semantics (except for division by 0, because it's un-intuitive and I wanted to try the error
   handling)
 - bare-bones ASP.net server. (no auth, middleware, proxy, additional configurability, logging)
-- No specific direction for further development, but a focus on flexibility and testability.
+- No specific direction for further development, but a focus on flexibility and testability. Performance (throughput,
+  latency) is not a concern.
+
+# API Design
+
+One gRPC method for each operation (add, subtract, ...), each with their own request/response messages. This allows for
+independent modifications as requirements evolve.
+
+The server operations are idempotent. So for fault tolerance, a simple retry on the client side iss sufficient.
 
 # Architecture / Design decisions
 
@@ -71,3 +79,4 @@ There's also a simple end-to-end integration test job (`e2eTest.sh`).
 - Logging
 - Better abstraction for the CLI interface (printing, parsing)
 - Formalize and test client error handling
+- Implement retry
